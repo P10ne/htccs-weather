@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="north_compass" data-name="north, compass" class="cls-1" d="M150,935a25,25,0,1,1,25-25A25,25,0,0,1,150,935Zm0-47a22,22,0,1,0,22,22A22,22,0,0,0,150,888Zm-10,22,10-15,10,15-10,15Zm4,0,6,10,6-10H144Z" transform="translate(-125 -885)"/>
+</svg>

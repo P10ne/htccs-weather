@@ -1,5 +1,9 @@
 extends ../layouts/layout
 block main
     include ../blocks/header/header
-    include ../blocks/card_weather
-    include ../blocks/card_cities
+    main.main
+        .container.weather__container
+            .weather
+                include ../blocks/card_weather
+            .cities
+                include ../blocks/card_cities

@@ -1,0 +1,6 @@
+mixin thermometersvg(options)
+    -const classes = ['field__img'];
+    -if(options.dark)
+    -    classes.push('field__img_dark')
+    svg(class= classes)
+        use(xlink:href='#thermometer')

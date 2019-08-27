@@ -41,6 +41,13 @@ const webpackConfig = function (options) {
                         options: { cacheDirectory: true }
                     }
                 },
+                // handlebars
+                {
+                    test: /\.handlebars$/,
+                    use: {
+                            loader: "handlebars-loader"
+                        }
+                },
                 // styles
                 {
                     test: /\.p?css$/,

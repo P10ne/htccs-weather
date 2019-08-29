@@ -1,8 +1,13 @@
 import './cities.pcss';
+import Handlebars from 'handlebars/dist/handlebars.min';
 
-const citiesTemplate = require('./cities.handlebars');
+import citiesTemplate from './citiesTemplate';
 
-export default function cities() {
+export default function cities(mediator) {
+    const doc = document;
+
+    const JS_CITIES_CLASS = 'js-cities';
+    const citiesContainer = doc.querySelector(JS_CITIES_CLASS);
     function getCities() {
         const cities = JSON.parse(localStorage.getItem('cities'));
         return {
@@ -10,16 +15,26 @@ export default function cities() {
         };
     }
 
-    return {
-        render: (container) => {
-            const result = citiesTemplate( getCities() );
-            if (container) {
-                container.innerHTML = result;
-            } else {
-                return result;
-            }
+    Handlebars.registerPartial('city-element', '' +
+        '{{#each cities }}' +
+            '<li class="cities__item">\n' +
+    '            <span class="cities__city-name">{{this.city}}</span>\n' +
+    '            <span class="cities__city-description">{{this.region}}</span>\n' +
+    '            <span class="cities__item-del js-cities__item-del">+</span>\n' +
+    '        </li>\n' +
+    '        {{else}}' +
+            '<li class="cities__item">\n' +
+    '            <span class="cities__city-name">Города не найдены</span>\n' +
+    '        </li>' +
+            '{{/each}}'
+    );
 
-            console.log('Cities rendered');
-        }
+    function renderCityList() {
+        const cityList = Handlebars.compile('{{> city-element }}')(getCities());
+        document.querySelector('.cities__list').innerHTML = cityList;
+    }
+
+    return {
+        renderCityList: renderCityList
     }
 }

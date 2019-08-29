@@ -1,16 +1,15 @@
-const bodyTemplate = require('./body.handlebars');
+import Handlebars from 'handlebars/dist/handlebars.min';
+import bodyTemplate from './bodyTemplate';
 
 export default function body() {
     return {
-        render: (container) => {
-            const result = bodyTemplate();
+        render: (data, container) => {
+            const res = Handlebars.compile('{{> body }}')(data);
             if (container) {
-                container.innerHTML = result;
+                container.innerHTML = res;
             } else {
-                return result;
+                return res;
             }
-
-            console.log('body rendered');
         }
     }
 }

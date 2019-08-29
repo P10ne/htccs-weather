@@ -1,10 +1,7 @@
 import './header.pcss';
+import Handlebars from 'handlebars/dist/handlebars.min';
+import headerTemplate from './headerTemplate';
 
-const headerTemplate = require('./header.handlebars');
 export default function header() {
-    return {
-        render: (container) => {
-            container.innerHTML = headerTemplate();
-        }
-    }
+
 }

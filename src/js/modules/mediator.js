@@ -1,20 +1,17 @@
 export default class Mediator {
-    EventNames = {
-        LOCATION_CHANGED_EVENT_NAME: 'location_changed'
-    };
 
     constructor() {
         this.events = {};
     }
 
-    addEventListener(name, handler) {
+    subscribe(name, handler) {
         if (this.events.hasOwnProperty(name))
             this.events[name].push(handler);
         else
             this.events[name] = [handler];
     };
 
-    removeEventListener(name, handler) {
+    unSubscribe(name, handler) {
         /* This is a bit tricky, because how would you identify functions?
            This simple solution should work if you pass THE SAME handler. */
         if (!this.events.hasOwnProperty(name))
@@ -25,7 +22,7 @@ export default class Mediator {
             this.events[name].splice(index, 1);
     };
 
-    fireEvent(name, args) {
+    call(name, args) {
         if (!this.events.hasOwnProperty(name))
             return;
 

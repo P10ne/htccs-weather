@@ -3,11 +3,11 @@ import Handlebars from 'handlebars/dist/handlebars.min';
 Handlebars.registerPartial('weather', '' +
     '<div class="card card_weather">' +
     '   <div class="weather__content">' +
-    '       <span class="weather__city-name">Ижевск</span>' +
+    '       <span class="weather__city-name">{{ city }}</span>' +
 '           <div class="weather__top-container">' +
     '           <div class="weather__top-wrapper">' +
     '               <div class="weather__state">' +
-    '                   <span class="weather__temp-val">+19</span>' +
+    '                   <span class="weather__temp-val">{{ current.temp_c }}</span>' +
     '<!--span.weather__temp-unit &#8451;-->' +
     '                   <span class="weather__temp-unit">°</span>' +
     '                   <p class="weather__precip">Облачно</p>' +

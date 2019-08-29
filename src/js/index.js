@@ -1,23 +1,27 @@
 import '../css/index.pcss';
 
-import header from "./components/header/header";
-import cities from "./components/cities/cities";
-import weather from "./components/weather/weather";
-import body from "./components/body/body";
+import Cities from "./components/cities/cities";
+import Weather from "./components/weather/weather";
+import Body from "./components/body/body";
 import Geo from "./utils/geo";
-import Mediator from "./mediator";
+import Mediator from "./modules/mediator";
+import Header from "./components/header/header";
+import Common from "./modules/common";
+import WeatherAPI from "./utils/weatherAPI";
 
 (function init() {
-    const doc = document;
-    doc.body.insertAdjacentHTML('afterBegin', body().render({title: 'Заголовок'}));
-    cities().renderCityList();
-
-
-
     const mediator = new Mediator();
-    const geoLoc = new Geo(mediator);
-    mediator.addEventListener(mediator.EventNames.LOCATION_CHANGED_EVENT_NAME, () => {
+    const header = new Header();
+    Common.doc.body.insertAdjacentHTML('afterBegin', new Body().render({title: 'Заголовок'}));
+
+    const cities = new Cities(mediator);
+    const weather = new Weather(mediator);
+
+/*
+    const geo = new Geo(mediator);
+    mediator.subscribe(mediator.EventNames.LOCATION_CHANGED_EVENT_NAME, () => {
         console.log('Местоположение изменено');
     });
-    geoLoc.updateLocation();
+    geo.updateLocation();
+ */
 })();

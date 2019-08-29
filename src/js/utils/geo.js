@@ -1,4 +1,5 @@
-import Mediator from "../mediator";
+import Mediator from "../modules/mediator";
+import Common from "../modules/common";
 
 export default class Geo {
     let
@@ -22,6 +23,6 @@ export default class Geo {
 
     updateLocation() {
         this.currentCoords = this.getCoords();
-        this.mediator.fireEvent(this.mediator.EventNames.LOCATION_CHANGED_EVENT_NAME, this.currentCoords);
+        this.mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, this.currentCoords);
     }
 }

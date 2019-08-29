@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars/dist/handlebars.min';
+
 Handlebars.registerPartial('body', '' +
     '{{> header }}' +
     '<main class="main">' +

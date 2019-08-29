@@ -2,6 +2,6 @@ import './header.pcss';
 import Handlebars from 'handlebars/dist/handlebars.min';
 import headerTemplate from './headerTemplate';
 
-export default function header() {
+export default class Header {
 
 }

@@ -1,11 +1,17 @@
 .cities {
-
+    width: calc(25% - 10px);
     padding-bottom: 35px;
     position: relative;
+
+    @media(--medium-size) {
+        width: calc(35% - 5px);
+    }
+
     &__item {
         padding: 10px 20px;
         cursor: pointer;
         position: relative;
+        border-left: 4px solid rgba(118, 130, 217, 0);
 
         &:hover &-del {
             display: flex;
@@ -28,13 +34,20 @@
             justify-content: center;
             align-items: center;
             &:hover {
-                color: #5262d9;
-                border-color: #5262d9;
+                color: #0a1674;
+                border-color: #0a1674;
+            }
+        }
+
+        &-container {
+            &_location {
+                position: relative;
+                border-bottom: 1px solid #0a1674;
             }
         }
 
         &_active {
-            background-color: #7682d9
+            border-left-color: rgba(118, 130, 217, 1);
         }
     }
 
@@ -69,5 +82,17 @@
 
     &__row {
         overflow: auto;
+
+        &_location {
+            &-svg {
+                position: absolute;
+                left: 3px;
+                top: 50%;
+                width: 20px;
+                transform: translateY(-50%);
+                height: 20px;
+                fill: #0a1674;
+            }
+        }
     }
 }

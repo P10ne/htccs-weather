@@ -31,35 +31,52 @@ export default class Weather {
                 last_updated: data.current.last_updated,
                 temp_c: this.getTemp(data.current.temp_c),
                 condition: {
-                    text: this.getConditionText(data.current.condition.code),
-                    icon: this.getConditionIconName(data.current.condition.code),
+                    text: data.current.condition.text,
+                    icon: this.getConditionIconName(data.current.condition.icon),
                 },
                 wind_mps: this.getWindMPS(data.current.wind_kph),
                 wind_dir: this.getWindDir(data.current.wind_dir),
                 feelslike_c: this.getTemp(data.current.feelslike_c),
                 humidity: data.current.humidity,
                 pressure: this.getPressureInMM(data.current.pressure_mb)
+            },
+            forecast: {
+                forecastday: [
+                    this.getForecastdayData(data.forecast.forecastday[0]),
+                    this.getForecastdayData(data.forecast.forecastday[1]),
+                    this.getForecastdayData(data.forecast.forecastday[2])
+                ]
             }
         };
         return parsedWeather;
     }
 
+    getForecastdayData(data) {
+        return {
+            date: data.date,
+            maxtemp_c: this.getTemp(data.day.maxtemp_c),
+            mintemp_c: this.getTemp(data.day.mintemp_c),
+            maxwind_kph: this.getWindMPS(data.day.maxwind_kph),
+            avghumidity: data.day.avghumidity,
+            condition: {
+                text: data.day.condition.text,
+                icon: this.getConditionIconName(data.day.condition.icon)
+            }
+        }
+    }
+
     getTemp(temp) {
         return temp > 0 ?
-            `+${temp}` :
-            `${temp}`;
+            `+${Math.round(temp)}` :
+            `${Math.round(temp)}`;
     }
 
     getWindMPS(windkph) {
         return Math.round(windkph / 3.6);
     }
 
-    getConditionText(code) {
-        return code;
-    }
-
-    getConditionIconName(code) {
-        return code;
+    getConditionIconName(icon) {
+        return icon;
     }
 
     getPressureInMM(pressure) {
@@ -67,7 +84,24 @@ export default class Weather {
     }
 
     getWindDir(dir) {
-        return dir;
+        switch(dir) {
+            case 'N': return 'С'; break;
+            case 'NNE': return 'ССВ'; break;
+            case 'NE': return 'СВ'; break;
+            case 'ENE': return 'ВСВ'; break;
+            case 'E': return 'В'; break;
+            case 'ESE': return 'ВЮВ'; break;
+            case 'SE': return 'ВЮВ'; break;
+            case 'SSE': return 'ЮЮВ'; break;
+            case 'S': return 'Ю'; break;
+            case 'SSW': return 'ЮЮЗ'; break;
+            case 'SW': return 'ЮЗ'; break;
+            case 'WSW': return 'ЗЮЗ'; break;
+            case 'W': return 'З'; break;
+            case 'WNW': return 'ЗСЗ'; break;
+            case 'NW': return 'СЗ'; break;
+            case 'NNW': return 'ССЗ'; break;
+        }
     }
 
     render(data) {

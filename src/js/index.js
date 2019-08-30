@@ -17,14 +17,4 @@ import WeatherAPI from "./utils/weatherAPI";
     const cities = new Cities(mediator);
     const weather = new Weather(mediator);
 
-    const geo = new Geo(mediator);
-    geo.getLocationData((data) => console.log(data));
-
-/*
-    const geo = new Geo(mediator);
-    mediator.subscribe(mediator.EventNames.LOCATION_CHANGED_EVENT_NAME, () => {
-        console.log('Местоположение изменено');
-    });
-    geo.updateLocation();
- */
 })();

@@ -8,7 +8,7 @@ export default class WeatherAPI {
     }
 
     static getForecast(data) {
-        const forecastWeather = WeatherAPI.createRequest({type: Config.weatherCurrent,
+        const forecastWeather = WeatherAPI.createRequest({type: Config.weatherForecast,
                                                                 params: [
                                                                             { name: 'q', value: data.city},
                                                                             { name: 'days', value: data.days }
@@ -22,6 +22,7 @@ export default class WeatherAPI {
         data.params.forEach((param) => {
             url += `&${ param.name }=${ param.value }`;
         });
+        url += `&lang=ru`;
         console.log(url);
         return fetch(url)
                     .then(response => response.json())

@@ -22,8 +22,7 @@ export default class Geo {
                             provider: 'yandex',
                             autoReverseGeocode: true
                         }).then(res => {
-                            //const data = res.geoObjects.get(0).properties.get('metaDataProperty').GeocoderMetaData.Address.Components[4].name; // Город
-                            const data = res.geoObjects.get(0).geometry.getCoordinates(); // Координаты
+                            //const data = res.geoObjects.get(0).geometry.getCoordinates(); // Координаты
                             self.geoLocationData = res.geoObjects.get(0);
                             resolve(self.geoLocationData);
                         });
@@ -34,7 +33,7 @@ export default class Geo {
         });
     }
 
-    getLocationData(callback) {
+    getLocationData() {
         const self = this;
         this.getLocation()
             .then(response => {

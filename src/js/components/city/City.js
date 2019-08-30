@@ -17,15 +17,14 @@ export default class City {
     }
 
     initEvent(item) {
-        const self = this;
         item.addEventListener('click', (e) => {
-            this.setActive(self);
+            this.setActive(this);
         });
     }
 
-    setActive(self) {
-        self.isActive = true;
-        self.mediator.call(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, [self]);
+    setActive() {
+        this.isActive = true;
+        this.mediator.call(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, [this]);
     }
 
     unsetActive() {

@@ -8,14 +8,12 @@ Handlebars.registerPartial('weather', '' +
     '           <div class="weather__top-wrapper">' +
     '               <div class="weather__state">' +
     '                   <span class="weather__temp-val">{{ current.temp_c }}</span>' +
-    '<!--span.weather__temp-unit &#8451;-->' +
     '                   <span class="weather__temp-unit">°</span>' +
     '                   <p class="weather__precip">Облачно</p>' +
     '               </div>' +
     '               <img class="weather__img" src="/images/116.png">' +
     '               <div class="weather__temp weather__temp_feel">' +
-    '                   <p class="weather__temp-feel-text">Ощущается как<span class="weather__temp-val"> +18</span>' +
-    '<!--span.weather__temp-unit &#8451;-->' +
+    '                   <p class="weather__temp-feel-text">Ощущается как <span class="weather__temp-val">{{ current.feelslike_c }}</span>' +
     '                       <span class="weather__temp-unit">°</span>' +
     '                   </p>' +
     '               </div>' +
@@ -24,22 +22,22 @@ Handlebars.registerPartial('weather', '' +
     '               <li class="weather-field">' +
     '                   <svg class="field__img"><use xlink:href="#wind"></use></svg>' +
     '                   <p class="field__content field__content_wind">' +
-    '                       <span class="field__val js-field__wind-speed">3.6</span>' +
+    '                       <span class="field__val js-field__wind-speed">{{ current.wind_mps }}</span>' +
     '                       <span class="field__unit"> м/с,</span>' +
-    '                       <span class="field__val js-field__wind-dir"> ЮЗ</span>' +
+    '                       <span class="field__val js-field__wind-dir">{{ current.wind_dir }}</span>' +
     '                   </p>' +
     '               </li>' +
 '                   <li class="weather-field">' +
     '                   <svg class="field__img"><use xlink:href="#mist"></use></svg>    ' +
     '                   <p class="field__content field__content_humidity">' +
-    '                       <span class="field__val js-field__humidity">87%</span>' +
+    '                       <span class="field__val js-field__humidity">{{ current.humidity }}%</span>' +
 '                           <span class="field__unit"></span>' +
     '                   </p>' +
 '                   </li>' +
 '                   <li class="weather-field">' +
     '                   <svg class="field__img"><use xlink:href="#thermometer"></use></svg>' +
     '                   <p class="field__content field__content_pressure">' +
-    '                       <span class="field__val js-field__pressure">745</span>' +
+    '                       <span class="field__val js-field__pressure">{{ current.pressure }}</span>' +
     '                       <span class="field__unit"> мм.рт.ст</span>' +
     '                   </p>' +
     '               </li>' +

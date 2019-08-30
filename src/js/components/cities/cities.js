@@ -7,13 +7,11 @@ import Common from "../../modules/common";
 import citiesTemplate from './citiesTemplate';
 
 export default class Cities {
-    const
-        doc = document;
-        JS_CITIES_CLASS = 'js-cities';
-        static CITIES_LIST_CLASS = 'cities__list';
-        citiesContainer = this.doc.querySelector(`.${this.JS_CITIES_CLASS}`);
-        citiesListContainer = null;
-        locStorage = new LStorage();
+    doc = document;
+    JS_CITIES_CLASS = 'js-cities';
+    static CITIES_LIST_CLASS = 'cities__list';
+    citiesContainer = this.doc.querySelector(`.${this.JS_CITIES_CLASS}`);
+    citiesListContainer = null;
 
     constructor(mediator) {
         this.mediator = mediator;
@@ -32,6 +30,9 @@ export default class Cities {
             this.renderCityList();
             console.log('Блок Cities: Город поменялся: ' + item.name);
         });
+        this.mediator.subscribe(Common.LOCATION_CHANGED_EVENT_NAME, (geoLocationData) => {
+            console.log(`Cities: местоположение изменено ${JSON.stringify(geoLocationData)}`);
+        })
     }
 
     createCityList() {
@@ -48,7 +49,7 @@ export default class Cities {
     }
 
     getCities() {
-        return this.locStorage.getCities();
+        return LStorage.getCities();
     }
 
     renderCityList() {

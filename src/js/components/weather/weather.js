@@ -34,7 +34,7 @@ export default class Weather {
                     text: this.getConditionText(data.current.condition.code),
                     icon: this.getConditionIconName(data.current.condition.code),
                 },
-                wind_kph: data.current.wind_kph,
+                wind_mps: this.getWindMPS(data.current.wind_kph),
                 wind_dir: this.getWindDir(data.current.wind_dir),
                 feelslike_c: this.getTemp(data.current.feelslike_c),
                 humidity: data.current.humidity,
@@ -50,6 +50,10 @@ export default class Weather {
             `${temp}`;
     }
 
+    getWindMPS(windkph) {
+        return Math.round(windkph / 3.6);
+    }
+
     getConditionText(code) {
         return code;
     }
@@ -59,7 +63,7 @@ export default class Weather {
     }
 
     getPressureInMM(pressure) {
-        return pressure;
+        return Math.round(pressure / 1.333);
     }
 
     getWindDir(dir) {

@@ -6,10 +6,11 @@ import Config from "../../modules/config";
 import Handlebars from 'handlebars/dist/handlebars.min';
 
 export default class Weather {
+    JS_WEATHER_CONTAINER_CLASS = 'js-weather-container';
     constructor(mediator) {
         this.mediator = mediator;
         this.subscribe();
-        this.container = Common.doc.querySelector('.weather');
+        this.container = Common.doc.querySelector(`.${this.JS_WEATHER_CONTAINER_CLASS}`);
     }
 
     subscribe() {
@@ -21,6 +22,11 @@ export default class Weather {
                 this.render(parsedWeather);
             });
 
+        });
+
+        this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
+            console.log('Weather: Добавляется город');
+            this.container.classList.add(Common.CONTAINER_DN_CLASS_NAME);
         });
     }
 

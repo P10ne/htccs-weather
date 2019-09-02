@@ -10,8 +10,7 @@ Handlebars.registerPartial('cities', '' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="row cities__add-city-row">\n' +
-    '            <button class="btn cities__add-city-btn">Добавить город</button>\n' +
-    '            <input class="input cities__add-city-input" placeholder="Название города" style="display:none">\n' +
+    '            <button class="btn cities__add-city-btn js-add-city-btn">Добавить город</button>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</div>\n');

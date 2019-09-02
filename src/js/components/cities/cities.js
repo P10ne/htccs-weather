@@ -11,18 +11,29 @@ export default class Cities {
     doc = document;
     JS_CITIES_CLASS = 'js-cities';
     JS_LOCATION_ROW_CLASS = 'js-location__row';
+    JS_ADD_CITY_BTN_CLASS = 'js-add-city-btn';
     static CITIES_LIST_CLASS = 'js-cities__list';
     citiesContainer = this.doc.querySelector(`.${this.JS_CITIES_CLASS}`);
     locationContainer = this.citiesContainer.querySelector(`.${this.JS_LOCATION_ROW_CLASS}`);
     citiesListContainer = null;
+    addCityBtn = this.citiesContainer.querySelector(`.${this.JS_ADD_CITY_BTN_CLASS}`);
 
     constructor(mediator) {
         this.mediator = mediator;
-        this.cities = this.createCityList();
+        this.cities = null;
+        this.createCityList();
         this.locationCity = null;
         this.initLocation();
         this.renderCityList();
         this.subscribeCities();
+        this.initAddCityBtn();
+    }
+
+    initAddCityBtn() {
+        this.addCityBtn.addEventListener('click', () => {
+            console.log('Кнопка: добавляем город');
+            this.mediator.call(Common.ON_CITY_ADDING_EVENT_NAME);
+        });
     }
 
     initLocation() {
@@ -41,18 +52,22 @@ export default class Cities {
             self.locationContainer.innerHTML = '';
             self.locationContainer.append(self.locationCity.getRendered());
         })
+        this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
+            console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
+            this.updateCityList();
+        });
     }
 
     createCityList() {
-        const localStCities = this.getCities().cities;
+        const localStCities = this.getCities();
         const cities = [];
         if (localStCities) {
             localStCities.forEach((item) => {
                 cities.push(new City(item, this.mediator));
             });
-            return cities;
+            this.cities = cities;
         } else {
-            return [];
+            this.cities = [];
         }
     }
 
@@ -69,5 +84,10 @@ export default class Cities {
             const city = item.getRendered();
             this.citiesListContainer.append(city);
         });
+    }
+
+    updateCityList() {
+        this.createCityList();
+        this.renderCityList();
     }
 }

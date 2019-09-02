@@ -42,6 +42,7 @@ export default class City {
         });
         item.querySelector(`.${this.CITIES_ITEM_DEL_CLASS}`).addEventListener('click', (e) => {
             console.log('Удаляется город');
+
             e.stopPropagation();
         });
     }

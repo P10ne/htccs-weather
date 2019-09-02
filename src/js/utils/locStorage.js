@@ -6,14 +6,12 @@ export default class LStorage {
 
     static getCities() {
         const cities = JSON.parse(localStorage.getItem('cities'));
-        return {
-            cities: cities
-        };
+        return cities;
     }
 
     static addCity(city) {
-        const currentCities = this.getCities();
-        currentCities.cities.push(city);
+        const currentCities = this.getCities() || [];
+        currentCities.push(city);
         localStorage.setItem('cities', JSON.stringify(currentCities));
     }
 }

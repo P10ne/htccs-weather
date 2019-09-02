@@ -2,6 +2,7 @@ import '../css/index.pcss';
 
 import Cities from "./components/cities/cities";
 import Weather from "./components/weather/weather";
+import Map from "./components/map/map";
 import Body from "./components/body/body";
 import Geo from "./utils/geo";
 import Mediator from "./modules/mediator";
@@ -16,5 +17,5 @@ import WeatherAPI from "./utils/weatherAPI";
 
     const cities = new Cities(mediator);
     const weather = new Weather(mediator);
-
+    const map = new Map(mediator);
 })();

@@ -9,9 +9,10 @@ export default class LocationCity extends City {
     }
 
     initEvent(item) {
+        const self = this;
         item.addEventListener('click', (e) => {
-            if(!this.isActive) {
-                this.setActive(this);
+            if(!self.isActive) {
+                self.setActive(self);
             }
         });
     }

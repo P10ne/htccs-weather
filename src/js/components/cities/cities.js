@@ -51,9 +51,17 @@ export default class Cities {
             self.locationCity = new LocationCity(geoLocationData, self.mediator);
             self.locationContainer.innerHTML = '';
             self.locationContainer.append(self.locationCity.getRendered());
-        })
+            self.locationCity.setActive();
+        });
         this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
             console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
+            this.cities.push(new City(item, this.mediator));
+            this.renderCityList();
+            item.setActive();
+            //this.updateCityList();
+        });
+        this.mediator.subscribe(Common.CITY_DELETED_EVENT_NAME, (item) => {
+            console.log(`cities: город удаляется`);
             this.updateCityList();
         });
     }

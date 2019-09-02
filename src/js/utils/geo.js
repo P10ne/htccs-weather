@@ -22,11 +22,10 @@ export default class Geo {
                             provider: 'yandex',
                             autoReverseGeocode: true
                         }).then(res => {
-                            //const data = res.geoObjects.get(0).geometry.getCoordinates(); // Координаты
                             self.geoLocationData = res.geoObjects.get(0);
                             resolve(self.geoLocationData);
                         });
-                    })
+                    });
             } else {
                 resolve(this.geoLocationData);
             }
@@ -37,14 +36,18 @@ export default class Geo {
         const self = this;
         this.getLocation()
             .then(response => {
-                const locationData = {};
-                locationData.country = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[0].name;
-                locationData.region = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[2].name;
-                locationData.city = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[4].name;
-                locationData.coords = self.geoLocationData.geometry.getCoordinates();
-                self.geoLocationData = locationData;
-                self.mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, [self.geoLocationData]);
-        });
+                    const locationData = {};
+                    locationData.country = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[0].name;
+                    locationData.region = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[2].name;
+                    locationData.city = self.geoLocationData.properties.get('metaDataProperty').GeocoderMetaData.Address.Components[4].name;
+                    locationData.coords = self.geoLocationData.geometry.getCoordinates();
+                    self.geoLocationData = locationData;
+                    self.mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, [self.geoLocationData]);
+                },
+                reject => {
+                    self.mediator.call(Common.GET_LOCATION_ERROR_EVENT_NAME)
+                }
+            );
     }
 
     updateLocation() {

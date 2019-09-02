@@ -16,7 +16,7 @@ export default class Weather {
     subscribe() {
         this.mediator.subscribe(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, (city) => {
             console.log('Блок погоды: город поменялся: ' + city.name);
-            const weather = WeatherAPI.getForecast({ city: city.name, days: Config.forecastDays} ).then( response => {
+            const weather = WeatherAPI.getForecast({ coords: city.coords, days: Config.forecastDays} ).then( response => {
                 const parsedWeather = this.parseWeather(city.name, response);
                 console.log(parsedWeather);
                 this.render(parsedWeather);
@@ -26,8 +26,21 @@ export default class Weather {
 
         this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
             console.log('Weather: Добавляется город');
-            this.container.classList.add(Common.CONTAINER_DN_CLASS_NAME);
+            this.hide();
         });
+
+        this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, () => {
+           this.show();
+        });
+    }
+
+
+    hide() {
+        this.container.classList.add(Common.CONTAINER_DN_CLASS_NAME);
+    }
+
+    show() {
+        this.container.classList.remove(Common.CONTAINER_DN_CLASS_NAME);
     }
 
     parseWeather(city, data) {

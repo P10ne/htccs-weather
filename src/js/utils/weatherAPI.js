@@ -10,7 +10,7 @@ export default class WeatherAPI {
     static getForecast(data) {
         const forecastWeather = WeatherAPI.createRequest({type: Config.weatherForecast,
                                                                 params: [
-                                                                            { name: 'q', value: data.city},
+                                                                            { name: 'q', value: data.coords.join(',')},
                                                                             { name: 'days', value: data.days }
                                                                         ]
                                                             });

@@ -7,7 +7,11 @@ Handlebars.registerPartial('city-element-location', '' +
     '       {{else}} \n' +
     '            <div class="cities__item" >\n' +
     '       {{/if}} \n' +
+    '       {{#if isError}}\n' +
+    '            <span class="cities__city-name cities__city-name_error">{{name}}</span>\n' +
+    '       {{else}} \n' +
     '            <span class="cities__city-name">{{name}}</span>\n' +
+    '       {{/if}} \n' +
     '            <span class="cities__city-description">{{region}}</span>\n' +
     '       </div>\n' +
     '       <svg class="cities__row_location-svg">\n' +

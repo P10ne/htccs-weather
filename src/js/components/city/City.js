@@ -7,6 +7,7 @@ import locStorage from "../../utils/locStorage";
 export default class City {
     CITIES_ITEM_CLASS = 'cities__item';
     CITIES_ITEM_DEL_CLASS = 'js-cities__item-del';
+    CITIES_ITEM_ACTIVE_CLASS = 'cities__item_active';
     static cityId = 0;
 
     constructor(city, mediator) {
@@ -63,7 +64,7 @@ export default class City {
         this.isActive = true;
         //this.nodeContainer.firstElementChild.classList.add(this.CITIES_ITEM_ACTIVE_CLASS);
         this.mediator.call(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, [this]);
-        this.updateNode();
+        //this.updateNode();
     }
 
     unsetActive() {

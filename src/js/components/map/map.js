@@ -12,14 +12,15 @@ export default class Map {
     constructor(mediator) {
         this.mediator = mediator;
         this.container = Common.doc.querySelector(`.${this.JS_MAP_CONTAINER_CLASS}`);
-        this.init();
         this.subscribe();
+        this.init();
     }
 
     subscribe() {
+        const self = this;
         this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
             console.log('Map: Добавляется город');
-            this.show();
+            self.show();
         });
         this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
             this.hide();
@@ -35,6 +36,7 @@ export default class Map {
     }
 
     init() {
+        const self = this;
         ymaps.load(Config.ymapsURL)
             .then(ymaps => {
                 const myMap = new ymaps.Map("map-container", {
@@ -48,20 +50,32 @@ export default class Map {
                     ymaps.geocode(coords, {
                         kind: 'locality'
                     }).then((res) => {
-                        console.log(res.geoObjects.get(0).properties.get('metaDataProperty').GeocoderMetaData);
-
                         const newCityData = {};
-                        const address = res.geoObjects.get(0).properties.get('metaDataProperty').GeocoderMetaData.AddressDetails;
-                        newCityData.country = address.Country ? address.Country.CountryName : 'Страна'
-                        newCityData.region = address.Country.AdministrativeArea ? address.Country.AdministrativeArea.AdministrativeAreaName : 'Регион';
-                        newCityData.city = address.Country.AdministrativeArea.SubAdministrativeArea ?
-                            address.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName:
-                            address.Country.AdministrativeArea.Locality.LocalityName;
-                        newCityData.coords = res.geoObjects.get(0).geometry.getCoordinates();
-                        newCityData.id = City.cityId;
+                        if (res.geoObjects.get(0)) {
+                            const address = res.geoObjects.get(0).properties.get('metaDataProperty').GeocoderMetaData.AddressDetails;
+                            newCityData.country = address.Country ? address.Country.CountryName : 'Страна'
+                            newCityData.region = address.Country.AdministrativeArea ? address.Country.AdministrativeArea.AdministrativeAreaName : 'Регион';
+                            newCityData.city = address.Country.AdministrativeArea.SubAdministrativeArea ?
+                                address.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName:
+                                address.Country.AdministrativeArea.Locality.LocalityName;
 
-                        LStorage.addCity(newCityData);
-                        this.mediator.call(Common.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
+                            newCityData.coords = res.geoObjects.get(0).geometry.getCoordinates();
+                            newCityData.id = City.cityId;
+
+                            LStorage.addCity(newCityData);
+                            self.mediator.call(Common.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
+                        } else {
+                            newCityData.coords = coords;
+                            newCityData.city = prompt('Не удалось определить город. Введите название: ', JSON.stringify(coords));
+                            newCityData.id = City.cityId;
+                            LStorage.addCity(newCityData);
+                            self.mediator.call(Common.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
+                        }
+
+                    })
+                    .catch(error => {
+                        alert('Ошибка при получении данных');
+                        console.log(error);
                     });
                 });
             })

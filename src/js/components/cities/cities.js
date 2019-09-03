@@ -55,9 +55,30 @@ export default class Cities {
         });
         this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
             console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
-            this.cities.push(new City(item, this.mediator));
+
+            // work
+
+            self.updateCityList();
+            self.cities.find(city => city.id === item.id).setActive();
+
+            //-work
+
+
+            //work 2
+            /*
+            const newCity = new City(item, this.mediator);
+            newCity.setActive();
+            this.cities.push(newCity);
             this.renderCityList();
-            item.setActive();
+            */
+            //-work2
+
+            //this.cities.push(new City(item, this.mediator));
+            //this.renderCityList();
+
+
+
+            //item.setActive();
             //this.updateCityList();
         });
         this.mediator.subscribe(Common.CITY_DELETED_EVENT_NAME, (item) => {

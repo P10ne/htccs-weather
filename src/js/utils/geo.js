@@ -24,8 +24,8 @@ export default class Geo {
                         }).then(res => {
                             self.geoLocationData = res.geoObjects.get(0);
                             resolve(self.geoLocationData);
-                        });
-                    });
+                        }).catch(c => reject(new Error()));
+                    }).catch(c => reject(new Error()));
             } else {
                 resolve(this.geoLocationData);
             }
@@ -45,13 +45,13 @@ export default class Geo {
                     self.mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, [self.geoLocationData]);
                 },
                 reject => {
-                    self.mediator.call(Common.GET_LOCATION_ERROR_EVENT_NAME)
+                    console.error(reject);
+                    self.mediator.call(Common.GET_LOCATION_ERROR_EVENT_NAME);
                 }
             );
     }
 
     updateLocation() {
-        this.currentCoords = this.getCoords();
-        this.mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, this.currentCoords);
+        this.currentCoords = this.getLocationData();
     }
 }

@@ -13,29 +13,29 @@
         position: relative;
         border-left: 4px solid rgba(118, 130, 217, 0);
 
-        &:hover &-del {
-            display: flex;
+        &:hover &-control {
+            opacity: 1;
         }
 
-        &-del {
-            display: none;
+        &-control {
+            opacity: 0;
             position: absolute;
             top: 50%;
-            right: 10px;
-            transform: translateY(-50%) rotate(45deg);
-            font-size: 16px;
-            line-height: 16px;
-            color: #555;
-            font-weight: bold;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid var(--text-dark-color);
-            justify-content: center;
-            align-items: center;
+            transform: translateY(-50%);
+            width: 25px;
+            height: 25px;
+            fill: #555;
+            transition: opacity 0.2s, fill 0.2s;
             &:hover {
-                color: #0a1674;
-                border-color: #0a1674;
+                fill: #0a1674;
+            }
+
+            &_update {
+                right: 10px;
+            }
+
+            &_del {
+                right: 10px;
             }
         }
 

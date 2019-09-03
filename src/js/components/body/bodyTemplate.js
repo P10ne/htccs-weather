@@ -5,7 +5,7 @@ Handlebars.registerPartial('body', '' +
     '<main class="main">' +
     '    <div class="container weather__container">' +
     '        <div class="weather js-weather-container">' +
-    '           {{> weather }}' +
+    '           ' +
     '        </div>' +
     '        <div class="map js-map-container container_dn">' +
     '           {{> map }}' +

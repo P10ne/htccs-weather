@@ -9,7 +9,9 @@ Handlebars.registerPartial('city-element', '' +
 '       {{/if}} \n' +
     '            <span class="cities__city-name">{{name}}</span>\n' +
     '            <span class="cities__city-description">{{region}}</span>\n' +
-    '            <span class="cities__item-del js-cities__item-del">+</span>\n' +
+     '           <svg class="cities__item-control cities__item-control_del js-cities__item-del">' +
+    '               <use xlink:href="#close"></use>' +
+    '            </svg>' +
     '       </div>\n' +
 '   </div>'
 );

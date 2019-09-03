@@ -11,19 +11,20 @@ export default class City {
     static cityId = 0;
 
     constructor(city, mediator) {
-        this.id = city.id || City.cityId;
-        if (city.id && city.id > City.cityId) {
-            City.cityId = city.id;
+        if (city) {
+            this.id = city.id || City.cityId;
+            if (city.id && city.id > City.cityId) {
+                City.cityId = city.id;
+            }
+            this.name = city.city;
+            this.region = city.region;
+            this.coords = city.coords;
+            this.mediator = mediator;
+            this.isActive = false;
+            this.nodeContainer = null;
+            City.cityId++;
+            console.log(`Создан город: ${JSON.stringify(this)}`);
         }
-        this.name = city.city;
-        this.region = city.region;
-        this.coords = city.coords;
-        this.mediator = mediator;
-        this.isActive = false;
-        this.subscribe();
-        this.nodeContainer = null;
-        City.cityId++;
-        console.log(`Создан город: ${JSON.stringify(this)}`);
     }
 
     subscribe() {

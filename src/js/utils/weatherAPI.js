@@ -28,7 +28,6 @@ export default class WeatherAPI {
                     .then(response => response.json())
                     .then(result => {
                         return result;
-                    })
-                    .catch(error => console.error(error));
+                    });
     }
 }

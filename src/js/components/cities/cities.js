@@ -49,9 +49,18 @@ export default class Cities {
         this.mediator.subscribe(Common.LOCATION_CHANGED_EVENT_NAME, (geoLocationData) => {
             console.log(`Cities: местоположение изменено ${JSON.stringify(geoLocationData)}`);
             self.locationCity = new LocationCity(geoLocationData, self.mediator);
+            self.locationCity.subscribe();
             self.locationContainer.innerHTML = '';
             self.locationContainer.append(self.locationCity.getRendered());
             self.locationCity.setActive();
+        });
+        this.mediator.subscribe(Common.GET_LOCATION_ERROR_EVENT_NAME, () => {
+            console.log('Cities: ошибка определния местоположения');
+            self.locationCity = new LocationCity(null, null, true);
+            self.locationContainer.append(self.locationCity.getRendered());
+            if (self.cities[0]) {
+                self.cities[0].setActive();
+            }
         });
         this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
             console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
@@ -69,7 +78,9 @@ export default class Cities {
         const cities = [];
         if (localStCities) {
             localStCities.forEach((item) => {
-                cities.push(new City(item, this.mediator));
+                const newCity = new City(item, this.mediator);
+                newCity.subscribe();
+                cities.push(newCity);
             });
             this.cities = cities;
         } else {

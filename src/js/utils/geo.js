@@ -18,14 +18,15 @@ export default class Geo {
             if(this.geoLocationData === null) {
                 ymaps.load(Config.ymapsURL)
                     .then(ymaps => {
+                        //reject(new Error());
                         ymaps.geolocation.get({
                             provider: 'yandex',
                             autoReverseGeocode: true
                         }).then(res => {
                             self.geoLocationData = res.geoObjects.get(0);
                             resolve(self.geoLocationData);
-                        }).catch(c => reject(new Error()));
-                    }).catch(c => reject(new Error()));
+                        }).catch(error => reject(error));
+                    }).catch(error => reject(error));
             } else {
                 resolve(this.geoLocationData);
             }

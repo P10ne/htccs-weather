@@ -1,5 +1,6 @@
 import './weather.pcss';
 import weatherTemplate from './weatherTemplate';
+import weatherErrorTemplate from './weatherErrorTemplate';
 import Common from "../../modules/common";
 import WeatherAPI from "../../utils/weatherAPI";
 import Config from "../../modules/config";
@@ -16,12 +17,15 @@ export default class Weather {
     subscribe() {
         this.mediator.subscribe(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, (city) => {
             console.log('Блок погоды: город поменялся: ' + city.name);
-            const weather = WeatherAPI.getForecast({ coords: city.coords, days: Config.forecastDays} ).then( response => {
-                const parsedWeather = this.parseWeather(city.name, response);
-                console.log(parsedWeather);
-                this.render(parsedWeather);
-            });
-
+            const weather = WeatherAPI.getForecast({ coords: city.coords, days: Config.forecastDays} )
+                .then( response => {
+                    const parsedWeather = this.parseWeather(city.name, response);
+                    console.log(parsedWeather);
+                    this.render(parsedWeather);
+                    },
+                    reject => {
+                        this.render(null);
+                });
         });
 
         this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
@@ -129,10 +133,12 @@ export default class Weather {
     }
 
     getRenderedWeather(data) {
-        const renderedWeather = Handlebars.compile('{{> weather }}')(data);
+        const renderedWeather = data ?
+            Handlebars.compile('{{> weather }}')(data) :
+            Handlebars.compile('{{> weatherError }}')();
         const div = Common.doc.createElement('div');
         div.innerHTML = renderedWeather.trim();
-        const renderedWeatherNode = div.firstChild;
+        const renderedWeatherNode = div.firstElementChild;
         return renderedWeatherNode;
     }
 }

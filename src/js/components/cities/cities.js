@@ -3,9 +3,9 @@ import Handlebars from 'handlebars/dist/handlebars.min';
 import City from '../city/City';
 import LStorage from "../../utils/locStorage";
 import Common from "../../modules/common";
-import Geo from "../../utils/geo";
 import citiesTemplate from './citiesTemplate';
 import LocationCity from "../locationCity/LocationCity";
+import Map from "../map/map";
 
 export default class Cities {
     doc = document;
@@ -37,8 +37,7 @@ export default class Cities {
     }
 
     initLocation() {
-        const geo = new Geo(this.mediator);
-        geo.getLocationData();
+        Map.updateLocation(this.mediator);
     }
 
     subscribeCities() {
@@ -55,8 +54,9 @@ export default class Cities {
             self.locationCity.setActive();
         });
         this.mediator.subscribe(Common.GET_LOCATION_ERROR_EVENT_NAME, () => {
-            console.log('Cities: ошибка определния местоположения');
-            self.locationCity = new LocationCity(null, null, true);
+            console.log('Cities: ошибка определения местоположения');
+            self.locationCity = new LocationCity(null, this.mediator, true);
+            self.locationContainer.innerHTML = '';
             self.locationContainer.append(self.locationCity.getRendered());
             if (self.cities[0]) {
                 self.cities[0].setActive();

@@ -36,6 +36,10 @@ export default class Weather {
         this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, () => {
            this.show();
         });
+
+        this.mediator.subscribe(Common.MAP_CARD_CLOSED_EVENT_NAME, () => {
+            this.show();
+        });
     }
 
 

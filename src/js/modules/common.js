@@ -12,4 +12,5 @@ export default class Common {
     static NEW_CITY_ADDED_EVENT_NAME = 'new_city_added';
     static CITY_DELETED_EVENT_NAME = 'city_deleted';
     static ON_CITY_ADDING_EVENT_NAME = 'on_city_adding';
+    static MAP_CARD_CLOSED_EVENT_NAME = 'map_card_closed';
 }

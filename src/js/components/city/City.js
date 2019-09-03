@@ -7,6 +7,7 @@ import locStorage from "../../utils/locStorage";
 export default class City {
     CITIES_ITEM_CLASS = 'cities__item';
     CITIES_ITEM_DEL_CLASS = 'js-cities__item-del';
+    CITIES_ITEM_UPDATE_CLASS = 'js-cities__item-update';
     CITIES_ITEM_ACTIVE_CLASS = 'cities__item_active';
     static cityId = 0;
 
@@ -43,8 +44,6 @@ export default class City {
         });
     }
 
-
-
     initEvent(item) {
         const self = this;
         item.addEventListener('click', (e) => {
@@ -63,13 +62,10 @@ export default class City {
 
     setActive() {
         this.isActive = true;
-        //this.nodeContainer.firstElementChild.classList.add(this.CITIES_ITEM_ACTIVE_CLASS);
         this.mediator.call(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, [this]);
-        //this.updateNode();
     }
 
     unsetActive() {
-        //this.nodeContainer.firstElementChild.classList.remove(this.CITIES_ITEM_ACTIVE_CLASS);
         this.isActive = false;
         this.updateNode();
     }

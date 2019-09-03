@@ -1,6 +1,14 @@
 .map {
     width: calc(75% - 10px);
-    @media (--medium-size) {
-        width: calc(65% - 5px);
+    min-height: 400px;
+    @media(--medium-size) {
+        & {
+            width: calc(65% - 5px);
+        }
+    }
+    @media(--small-size) {
+        & {
+            width: 100%;
+        }
     }
 }

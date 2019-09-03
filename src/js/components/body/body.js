@@ -6,12 +6,8 @@ export default class Body {
 
     }
 
-    render(data, container) {
-        const res = Handlebars.compile('{{> body }}')(data);
-        if (container) {
-            container.innerHTML = res;
-        } else {
-            return res;
-        }
+    render() {
+        const res = Handlebars.compile('{{> body }}')();
+        return res;
     }
 }

@@ -2,11 +2,6 @@ import Config from "../modules/config";
 
 export default class WeatherAPI {
 
-    static getCurrent(data) {
-        const currentWeather = WeatherAPI.createRequest({type: Config.weatherCurrent, params: [{ name: 'q', value: data.city}]});
-        return currentWeather;
-    }
-
     static getForecast(data) {
         const forecastWeather = WeatherAPI.createRequest({type: Config.weatherForecast,
                                                                 params: [

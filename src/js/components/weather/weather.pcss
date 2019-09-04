@@ -25,7 +25,7 @@
         align-items: center;
     }
 
-    &__content {
+    &-content {
         position: relative;
         overflow: hidden;
     }
@@ -60,20 +60,6 @@
                 & .weather__temp-val, & .weather__temp-unit {
                     font-size: 14px;
                 }
-            }
-        }
-    }
-
-    &__container {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        @media (--medium-size) {
-            padding: 10px;
-        }
-        @media(--small-size) {
-            & {
-                flex-direction: column-reverse;
             }
         }
     }

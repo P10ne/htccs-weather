@@ -1,6 +1,7 @@
 /* eslint import/no-extraneous-dependencies: 0, global-require: 0, prefer-template: 0 */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 const helpers = require('./helpers');
 const pages = require('../config/pages');
@@ -99,7 +100,10 @@ const webpackConfig = function (options) {
                     from: helpers.root('src', 'static'),
                     to: helpers.root('build', 'static')
                 }
-            ])
+            ]),
+            new webpack.ProvidePlugin({
+                Handlebars: 'handlebars/dist/handlebars.js'
+            })
         ]
     };
 };

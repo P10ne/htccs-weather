@@ -1,7 +1,6 @@
 import City from "../city/City";
 import locationCityTemplate from './locationCityTemplate';
 import Common from "../../modules/common";
-import Handlebars from 'handlebars/dist/handlebars.min';
 import Map from "../map/map";
 
 export default class LocationCity extends City {
@@ -13,19 +12,22 @@ export default class LocationCity extends City {
         }
     }
 
-    initEvent(item) {
-        const self = this;
-        if (!self.isError) {
-            item.addEventListener('click', (e) => {
-                if(!self.isActive) {
-                    self.setActive();
-                }
-            });
+    onSelect = () => {
+        if(!this.isActive) {
+            this.setActive();
         }
-        item.querySelector(`.${self.CITIES_ITEM_UPDATE_CLASS}`).addEventListener('click', (e) => {
-            console.log('LocationCity: Обновляется местоположение');
-            Map.updateLocation(self.mediator);
-        })
+    }
+
+    onLocationUpdate = () => {
+        console.log('LocationCity: Обновляется местоположение');
+        Map.updateLocation(this.mediator);
+    }
+
+    initEvent(item) {
+        if (!this.isError) {
+            item.addEventListener('click', this.onSelect);
+        }
+        item.querySelector(`.${this.CITIES_ITEM_UPDATE_CLASS}`).addEventListener('click', this.onLocationUpdate);
     }
 
     getRendered() {

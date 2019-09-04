@@ -1,6 +1,5 @@
 import cityTemplate from '../city/cityTemplate';
 import Cities from "../cities/cities";
-import Handlebars from 'handlebars/dist/handlebars.min';
 import Common from "../../modules/common";
 import locStorage from "../../utils/locStorage";
 
@@ -28,41 +27,46 @@ export default class City {
         }
     }
 
-    subscribe() {
-        const self = this;
-        this.mediator.subscribe(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, (city) => {
-            if (self !== city) {
-                if (self.isActive) {
-                    self.unsetActive();
-                    console.log(`City: город ${self.name} больше не активен`);
-                    self.updateNode();
-                }
-            } else {
-                console.log(`City: город ${city.name} теперь активен`);
-                self.updateNode();
+    activeCityChangedEvent  = (city) => {
+        if (this !== city) {
+            if (this.isActive) {
+                this.unsetActive();
+                console.log(`City: город ${this.name} больше не активен`);
+                this.updateNode();
             }
-        });
+        } else {
+            console.log(`City: город ${city.name} теперь активен`);
+            this.updateNode();
+        }
+    };
+
+    onSelect() {
+        if(!this.isActive) {
+            this.setActive();
+        }
     }
 
+    onDelete = (e) => {
+        console.log(`Удаляется город ${JSON.stringify(this)}`);
+        if (locStorage.deleteCity(this)) {
+            this.mediator.call(Common.EVENT.CITY_DELETED_EVENT_NAME, [this]);
+        }
+        e.stopPropagation();
+    }
+
+    subscribe() {
+        this.mediator.subscribe(Common.EVENT.ACTIVE_CITY_CHANGED_EVENT_NAME, this.activeCityChangedEvent);
+    }
+
+
     initEvent(item) {
-        const self = this;
-        item.addEventListener('click', (e) => {
-            if(!self.isActive) {
-                self.setActive();
-            }
-        });
-        item.querySelector(`.${self.CITIES_ITEM_DEL_CLASS}`).addEventListener('click', (e) => {
-            console.log(`Удаляется город ${JSON.stringify(self)}`);
-            if (locStorage.deleteCity(self)) {
-                self.mediator.call(Common.CITY_DELETED_EVENT_NAME, [self]);
-            }
-            e.stopPropagation();
-        });
+        item.addEventListener('click', this.onSelect.bind(this));
+        item.querySelector(`.${this.CITIES_ITEM_DEL_CLASS}`).addEventListener('click', this.onDelete);
     }
 
     setActive() {
         this.isActive = true;
-        this.mediator.call(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, [this]);
+        this.mediator.call(Common.EVENT.ACTIVE_CITY_CHANGED_EVENT_NAME, [this]);
     }
 
     unsetActive() {

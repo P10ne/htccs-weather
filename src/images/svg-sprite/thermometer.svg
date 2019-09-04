@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="50" viewBox="0 0 26 50">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="_75_full_thermometer" data-name="75% full thermometer" class="cls-1" d="M973,922a13,13,0,1,1-21.3-10H951V893h0.059a9,9,0,0,1,17.882,0H969v19h-0.7A12.973,12.973,0,0,1,973,922Zm-7-7.986V893h-0.09a5.993,5.993,0,0,0-11.82,0H954v21.014A10,10,0,1,0,966,914.014ZM960,929a7,7,0,0,1-3-13.317V899h6v16.683A7,7,0,0,1,960,929Z" transform="translate(-947 -885)"/>
+</svg>

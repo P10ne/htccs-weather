@@ -1,0 +1,27 @@
+.forecast {
+    &__fields-list {
+        flex-direction: column;
+    }
+
+    &__temp {
+        display:flex;
+        align-items: center;
+    }
+
+    &__card {
+        padding: 10px;
+        padding-top: 30px;
+        position: relative;
+
+        & .forecast__card-label {
+            position: absolute;
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
+        }
+    }
+
+    &-field {
+        font-size: 16px;
+    }
+}

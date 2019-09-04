@@ -45,7 +45,10 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "^7.2.5"
+    "@babel/polyfill": "^7.2.5",
+    "handlebars": "^4.1.2",
+    "handlebars-loader": "^1.7.1",
+    "ymaps": "^0.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

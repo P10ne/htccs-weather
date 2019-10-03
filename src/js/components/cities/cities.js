@@ -1,5 +1,4 @@
 import './cities.pcss';
-import Handlebars from 'handlebars/dist/handlebars.min';
 import City from '../city/City';
 import LStorage from "../../utils/locStorage";
 import Common from "../../modules/common";
@@ -8,12 +7,11 @@ import LocationCity from "../locationCity/LocationCity";
 import Map from "../map/map";
 
 export default class Cities {
-    doc = document;
     JS_CITIES_CLASS = 'js-cities';
     JS_LOCATION_ROW_CLASS = 'js-location__row';
     JS_ADD_CITY_BTN_CLASS = 'js-add-city-btn';
     static CITIES_LIST_CLASS = 'js-cities__list';
-    citiesContainer = this.doc.querySelector(`.${this.JS_CITIES_CLASS}`);
+    citiesContainer = Common.doc.querySelector(`.${this.JS_CITIES_CLASS}`);
     locationContainer = this.citiesContainer.querySelector(`.${this.JS_LOCATION_ROW_CLASS}`);
     citiesListContainer = null;
     addCityBtn = this.citiesContainer.querySelector(`.${this.JS_ADD_CITY_BTN_CLASS}`);
@@ -32,7 +30,7 @@ export default class Cities {
     initAddCityBtn() {
         this.addCityBtn.addEventListener('click', () => {
             console.log('Кнопка: добавляем город');
-            this.mediator.call(Common.ON_CITY_ADDING_EVENT_NAME);
+            this.mediator.call(Common.EVENT.ON_CITY_ADDING_EVENT_NAME);
         });
     }
 
@@ -40,37 +38,45 @@ export default class Cities {
         Map.updateLocation(this.mediator);
     }
 
+    locationChangedEvent = (geoLocationData) => {
+        console.log(`Cities: местоположение изменено ${JSON.stringify(geoLocationData)}`);
+        this.locationCity = new LocationCity(geoLocationData, this.mediator);
+        this.locationCity.subscribe();
+        this.locationContainer.innerHTML = '';
+        this.locationContainer.append(this.locationCity.getRendered());
+        this.locationCity.setActive()
+    }
+
+    locationChangedError = () => {
+        console.log('Cities: ошибка определения местоположения');
+        this.locationCity = new LocationCity(null, this.mediator, true);
+        this.locationContainer.innerHTML = '';
+        this.locationContainer.append(this.locationCity.getRendered());
+        if (this.cities[0]) {
+            this.cities[0].setActive();
+        }
+    }
+
+    newCityAddedEvent = (item) => {
+        console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
+        this.updateCityList();
+        this.cities.find(city => city.id === item.id).setActive();
+    }
+
+    cityDeletedEvent = () => {
+        console.log(`cities: город удаляется`);
+        this.updateCityList();
+    }
+
+
     subscribeCities() {
-        const self = this;
-        this.mediator.subscribe(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, (item) => {
+        this.mediator.subscribe(Common.EVENT.ACTIVE_CITY_CHANGED_EVENT_NAME, (item) => {
             console.log('Блок Cities: Город поменялся: ' + item.name);
         });
-        this.mediator.subscribe(Common.LOCATION_CHANGED_EVENT_NAME, (geoLocationData) => {
-            console.log(`Cities: местоположение изменено ${JSON.stringify(geoLocationData)}`);
-            self.locationCity = new LocationCity(geoLocationData, self.mediator);
-            self.locationCity.subscribe();
-            self.locationContainer.innerHTML = '';
-            self.locationContainer.append(self.locationCity.getRendered());
-            self.locationCity.setActive();
-        });
-        this.mediator.subscribe(Common.GET_LOCATION_ERROR_EVENT_NAME, () => {
-            console.log('Cities: ошибка определения местоположения');
-            self.locationCity = new LocationCity(null, this.mediator, true);
-            self.locationContainer.innerHTML = '';
-            self.locationContainer.append(self.locationCity.getRendered());
-            if (self.cities[0]) {
-                self.cities[0].setActive();
-            }
-        });
-        this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
-            console.log(`Cities: Добавлен новый город: ${JSON.stringify(item)}`);
-            self.updateCityList();
-            self.cities.find(city => city.id === item.id).setActive();
-        });
-        this.mediator.subscribe(Common.CITY_DELETED_EVENT_NAME, (item) => {
-            console.log(`cities: город удаляется`);
-            this.updateCityList();
-        });
+        this.mediator.subscribe(Common.EVENT.LOCATION_CHANGED_EVENT_NAME, this.locationChangedEvent);
+        this.mediator.subscribe(Common.EVENT.GET_LOCATION_ERROR_EVENT_NAME, this.locationChangedError);
+        this.mediator.subscribe(Common.EVENT.NEW_CITY_ADDED_EVENT_NAME, this.newCityAddedEvent);
+        this.mediator.subscribe(Common.EVENT.CITY_DELETED_EVENT_NAME, this.cityDeletedEvent);
     }
 
     createCityList() {

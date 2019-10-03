@@ -11,6 +11,7 @@ export default class Map {
     JS_MAP_CONTAINER_CLASS = 'js-map-container';
     JS_MAP_CLOSE_BTN_CLASS = 'js-map-close-btn';
     static geoLocationData = null;
+
     constructor(mediator) {
         this.mediator = mediator;
         this.container = Common.doc.querySelector(`.${this.JS_MAP_CONTAINER_CLASS}`);
@@ -18,34 +19,39 @@ export default class Map {
         this.init();
     }
 
+    onCityAdding = () => {
+        console.log('Map: Добавляется город');
+        this.show();
+    }
+
+    onCityAdded = () => {
+        this.hide();
+    }
+
+    onClose = () => {
+        console.log('Закрывается map');
+        this.hide();
+        this.mediator.call(Common.EVENT.MAP_CARD_CLOSED_EVENT_NAME);
+    }
+
     subscribe() {
-        const self = this;
-        this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
-            console.log('Map: Добавляется город');
-            self.show();
-        });
-        this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, (item) => {
-            this.hide();
-        })
+        this.mediator.subscribe(Common.EVENT.ON_CITY_ADDING_EVENT_NAME, this.onCityAdding);
+        this.mediator.subscribe(Common.EVENT.NEW_CITY_ADDED_EVENT_NAME, this.onCityAdded);
     }
 
     hide() {
-        this.container.classList.add(Common.CONTAINER_DN_CLASS_NAME);
+        this.container.classList.add(Common.CLASSES.CONTAINER_DN_CLASS_NAME);
     }
 
     show() {
-        this.container.classList.remove(Common.CONTAINER_DN_CLASS_NAME);
+        this.container.classList.remove(Common.CLASSES.CONTAINER_DN_CLASS_NAME);
     }
 
     init() {
         const self = this;
 
         // Закрытие окна с картой
-        const mapCloseBtn = Common.doc.querySelector(`.${this.JS_MAP_CLOSE_BTN_CLASS}`).addEventListener('click', (e) => {
-             console.log('Закрывается map');
-             self.hide();
-             this.mediator.call(Common.MAP_CARD_CLOSED_EVENT_NAME);
-        });
+        const mapCloseBtn = Common.doc.querySelector(`.${this.JS_MAP_CLOSE_BTN_CLASS}`).addEventListener('click', this.onClose);
 
         // Работа с картой
         ymaps.load(Config.ymapsURL)
@@ -66,13 +72,13 @@ export default class Map {
                             newCityData = Map.getGeoObjectData(res.geoObjects.get(0));
                             newCityData.id = City.cityId;
                             LStorage.addCity(newCityData);
-                            self.mediator.call(Common.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
+                            self.mediator.call(Common.EVENT.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
                         } else {
                             newCityData.coords = coords;
                             newCityData.city = prompt('Не удалось определить город. Введите название: ', JSON.stringify(coords));
                             newCityData.id = City.cityId;
                             LStorage.addCity(newCityData);
-                            self.mediator.call(Common.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
+                            self.mediator.call(Common.EVENT.NEW_CITY_ADDED_EVENT_NAME, [newCityData]);
                         }
                     })
                     .catch(error => {
@@ -100,7 +106,7 @@ export default class Map {
             ymaps.load(Config.ymapsURL)
                 .then(ymaps => {
                     ymaps.geolocation.get({
-                        provider: 'browser',
+                        provider: Config.locationType,
                         autoReverseGeocode: true
                     }).then(res => {
                         resolve(res.geoObjects.get(0));
@@ -113,17 +119,17 @@ export default class Map {
         Map.getLocation()
             .then(response => {
                 if (Map.geoLocationData && Map.geoLocationData.coords === response.geometry.getCoordinates()) {
-                    mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, [Map.geoLocationData]);
+                    mediator.call(Common.EVENT.LOCATION_CHANGED_EVENT_NAME, [Map.geoLocationData]);
                 } else {
                     let locationData = {};
                     locationData = Map.getGeoObjectData(response);
                     Map.geoLocationData = locationData;
-                    mediator.call(Common.LOCATION_CHANGED_EVENT_NAME, [Map.geoLocationData]);
+                    mediator.call(Common.EVENT.LOCATION_CHANGED_EVENT_NAME, [Map.geoLocationData]);
                 }
             },
             reject => {
                 console.error(reject);
-                mediator.call(Common.GET_LOCATION_ERROR_EVENT_NAME);
+                mediator.call(Common.EVENT.GET_LOCATION_ERROR_EVENT_NAME);
             });
     }
 

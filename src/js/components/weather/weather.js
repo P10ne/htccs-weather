@@ -4,7 +4,6 @@ import weatherErrorTemplate from './weatherErrorTemplate';
 import Common from "../../modules/common";
 import WeatherAPI from "../../utils/weatherAPI";
 import Config from "../../modules/config";
-import Handlebars from 'handlebars/dist/handlebars.min';
 
 export default class Weather {
     JS_WEATHER_CONTAINER_CLASS = 'js-weather-container';
@@ -14,41 +13,32 @@ export default class Weather {
         this.container = Common.doc.querySelector(`.${this.JS_WEATHER_CONTAINER_CLASS}`);
     }
 
-    subscribe() {
-        this.mediator.subscribe(Common.ACTIVE_CITY_CHANGED_EVENT_NAME, (city) => {
-            console.log('Блок погоды: город поменялся: ' + city.name);
-            const weather = WeatherAPI.getForecast({ coords: city.coords, days: Config.forecastDays} )
-                .then( response => {
+    activeCityChangedEvent = (city) => {
+        console.log('Блок погоды: город поменялся: ' + city.name);
+        const weather = WeatherAPI.getForecast({ coords: city.coords, days: Config.forecastDays} )
+            .then( response => {
                     const parsedWeather = this.parseWeather(city.name, response);
                     console.log(parsedWeather);
                     this.render(parsedWeather);
-                    },
-                    reject => {
-                        this.render(null);
+                },
+                reject => {
+                    this.render(null);
                 });
-        });
-
-        this.mediator.subscribe(Common.ON_CITY_ADDING_EVENT_NAME, () => {
-            console.log('Weather: Добавляется город');
-            this.hide();
-        });
-
-        this.mediator.subscribe(Common.NEW_CITY_ADDED_EVENT_NAME, () => {
-           this.show();
-        });
-
-        this.mediator.subscribe(Common.MAP_CARD_CLOSED_EVENT_NAME, () => {
-            this.show();
-        });
     }
 
+    subscribe() {
+        this.mediator.subscribe(Common.EVENT.ACTIVE_CITY_CHANGED_EVENT_NAME, this.activeCityChangedEvent);
+        this.mediator.subscribe(Common.EVENT.ON_CITY_ADDING_EVENT_NAME, this.hide.bind(this));
+        this.mediator.subscribe(Common.EVENT.NEW_CITY_ADDED_EVENT_NAME, this.show.bind(this));
+        this.mediator.subscribe(Common.EVENT.MAP_CARD_CLOSED_EVENT_NAME, this.show.bind(this));
+    }
 
     hide() {
-        this.container.classList.add(Common.CONTAINER_DN_CLASS_NAME);
+        this.container.classList.add(Common.CLASSES.CONTAINER_DN_CLASS_NAME);
     }
 
     show() {
-        this.container.classList.remove(Common.CONTAINER_DN_CLASS_NAME);
+        this.container.classList.remove(Common.CLASSES.CONTAINER_DN_CLASS_NAME);
     }
 
     parseWeather(city, data) {

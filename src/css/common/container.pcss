@@ -4,7 +4,21 @@
     margin: 0 auto;
     padding: 0 10px;
 
-    &_dn {
+    &--dn {
         display: none;
+    }
+
+    &--weather {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        @media (--medium-size) {
+            padding: 10px;
+        }
+        @media(--small-size) {
+            & {
+                flex-direction: column-reverse;
+            }
+        }
     }
 }

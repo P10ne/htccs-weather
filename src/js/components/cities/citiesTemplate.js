@@ -1,7 +1,5 @@
-import Handlebars from 'handlebars/dist/handlebars.min';
-
 Handlebars.registerPartial('cities', '' +
-    '<div class="card card_cities js-cities">\n' +
+    '<div class="card card--cities js-cities">\n' +
     '    <div class="cities__content">\n' +
     '        <div class="row cities__row cities__row_location js-location__row">\n' +
     '        </div> \n' +

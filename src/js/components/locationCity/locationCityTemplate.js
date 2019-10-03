@@ -1,5 +1,3 @@
-import Handlebars from 'handlebars/dist/handlebars.min';
-
 Handlebars.registerPartial('city-element-location', '' +
     '   <div class="cities__item-container cities__item-container_location" data-city-id="{{id}}" >\n' +
     '       {{#if isActive}} \n' +
